@@ -600,6 +600,112 @@
   }
 
   /* ==========================================================
+     CONTACT
+     ========================================================== */
+  .contact-grid{
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .contact-lead{
+    color: var(--text-muted);
+    font-size: 16px;
+    max-width: 46ch;
+    margin-bottom: 32px;
+  }
+  .contact-list{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .contact-item{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 4px;
+    border-top: 1px solid var(--border-soft);
+    transition: gap 0.15s ease, color 0.15s ease;
+  }
+  .contact-item:first-child{ border-top: none; }
+  .contact-item:hover{ gap: 20px; color: var(--accent); }
+  .contact-icon{
+    width: 40px; height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+  }
+  .contact-icon svg{ width: 18px; height: 18px; }
+  .contact-label{
+    display: block;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .contact-value{
+    display: block;
+    font-size: 13.5px;
+    color: var(--text-dim);
+    word-break: break-word;
+  }
+
+  .message-panel{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .message-form{
+    display: flex;
+    flex-direction: column;
+    padding: 24px 26px 26px;
+  }
+  .field-label{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+    margin-bottom: 8px;
+    margin-top: 18px;
+  }
+  .field-label:first-child{ margin-top: 0; }
+  .field-input{
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 12px 14px;
+    transition: border-color 0.15s ease;
+  }
+  .field-input:focus{
+    outline: none;
+    border-color: var(--accent-soft-2);
+  }
+  .field-textarea{ resize: vertical; min-height: 110px; font-family: var(--sans); }
+  .btn-send{
+    margin-top: 24px;
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 13px;
+  }
+  .send-note{
+    font-size: 11.5px;
+    color: var(--text-dim);
+    text-align: center;
+    margin: 12px 0 0;
+  }
+
+  /* ==========================================================
      FOOTER
      ========================================================== */
   footer{
@@ -643,6 +749,7 @@
     .hero-grid{ grid-template-columns: 1fr; gap: 40px; }
     .project-card{ grid-template-columns: 1fr; }
     .project-visual{ border-right: none; border-bottom: 1px solid var(--border); min-height: 200px; }
+    .contact-grid{ grid-template-columns: 1fr; gap: 36px; }
   }
 
   @media (max-width: 768px){
@@ -695,7 +802,7 @@
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
-      <a href="mailto:ankitrajput8@yahoo.com" class="cta">Email Me</a>
+      <a href="#contact" class="cta">Contact</a>
     </nav>
   </div>
 </header>
@@ -717,6 +824,10 @@
           <a class="btn primary" href="mailto:ankitrajput8@yahoo.com">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg>
             Email Me
+          </a>
+          <a class="btn ghost" href="https://drive.google.com/file/d/1V-Yi4Fw5qA3dwakmPxN_TUlJouFhQYsS/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15h6M9 11h6M9 19h4"/></svg>
+            View CV
           </a>
           <a class="btn ghost" href="https://github.com/Ankit-rajput-08" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.66.5 12.03c0 5.1 3.29 9.42 7.86 10.96.57.1.78-.25.78-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.08-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.8 1.19 1.82 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.66.79.55A10.53 10.53 0 0 0 23.5 12.03C23.5 5.66 18.35.5 12 .5Z"/></svg>
@@ -892,6 +1003,74 @@
     </div>
   </section>
 
+  <!-- ============ CONTACT ============ -->
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">04 · contact.sh</div>
+        <h2 class="section-title">Get in <span class="dim">touch</span></h2>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-intro reveal">
+          <p class="contact-lead">
+            Have a role or project in mind? I'm open to discussing Backend Engineer opportunities focused on
+            scalable services, asynchronous processing, and distributed systems.
+          </p>
+          <div class="contact-list">
+            <a class="contact-item" href="mailto:ankitrajput8@yahoo.com">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg>
+              </span>
+              <span>
+                <span class="contact-label">Email</span>
+                <span class="contact-value">ankitrajput8@yahoo.com</span>
+              </span>
+            </a>
+            <a class="contact-item" href="https://www.linkedin.com/in/ankitrajput08/" target="_blank" rel="noopener noreferrer">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.44-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+              </span>
+              <span>
+                <span class="contact-label">LinkedIn</span>
+                <span class="contact-value">linkedin.com/in/ankitrajput08</span>
+              </span>
+            </a>
+            <a class="contact-item" href="https://github.com/Ankit-rajput-08" target="_blank" rel="noopener noreferrer">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.66.5 12.03c0 5.1 3.29 9.42 7.86 10.96.57.1.78-.25.78-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.08-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.8 1.19 1.82 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.66.79.55A10.53 10.53 0 0 0 23.5 12.03C23.5 5.66 18.35.5 12 .5Z"/></svg>
+              </span>
+              <span>
+                <span class="contact-label">GitHub</span>
+                <span class="contact-value">github.com/Ankit-rajput-08</span>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="message-panel reveal">
+          <div class="console-bar">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="filename">message.send()</span>
+          </div>
+          <form id="contactForm" class="message-form">
+            <label class="field-label" for="fName">[ NAME ]</label>
+            <input class="field-input" type="text" id="fName" name="name" required autocomplete="name">
+
+            <label class="field-label" for="fEmail">[ EMAIL_ADDRESS ]</label>
+            <input class="field-input" type="email" id="fEmail" name="email" required autocomplete="email">
+
+            <label class="field-label" for="fMessage">[ MESSAGE ]</label>
+            <textarea class="field-input field-textarea" id="fMessage" name="message" required rows="5"></textarea>
+
+            <button type="submit" class="btn-execute btn-send">[ SEND MESSAGE ]</button>
+            <p class="send-note" id="sendNote">Opens your email app with this filled in — nothing is sent from here directly.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -940,16 +1119,9 @@
       status: 200, statusText: 'OK',
       body: {
         name: "Ankit Rajput",
-        title: "Backend Engineer — Distributed Systems & Java",
-        status: "Open to work",
         location: "India",
         summary: "Backend engineer with experience building scalable distributed systems using Java, Spring Boot, Redis, and Kafka.",
         seeking: "Backend Engineer role focused on scalable services, asynchronous processing, system reliability, and distributed architecture.",
-        education: {
-          degree: "B.Tech in Computer Science & Engineering",
-          university: "Punjab Technical University",
-          years: "2022 - 2026"
-        },
         contact: {
           email: "ankitrajput8@yahoo.com",
           linkedin: "linkedin.com/in/ankitrajput08",
@@ -961,11 +1133,9 @@
       status: 200, statusText: 'OK',
       body: {
         languages: ["Java"],
-        frameworks_and_libraries: ["Spring Boot", "Spring Data JPA", "Spring Security", "REST APIs", "JWT", "Hibernate", "Maven"],
         databases_and_caching: ["MySQL", "MongoDB", "Redis (Lua Scripting, ZSET, Atomic Operations, Redisson)"],
         messaging: ["Apache Kafka"],
-        tools: ["Git", "Docker", "Postman", "IntelliJ IDEA", "VS Code"],
-        core_concepts: ["Object-Oriented Programming", "Database Management Systems", "Microservices", "Event-Driven Architecture", "Async Messaging", "API Design", "Concurrency Control"]
+        tools: ["Git", "Docker", "Postman", "IntelliJ IDEA", "VS Code"]
       }
     },
     projects: {
@@ -973,33 +1143,16 @@
       body: [
         {
           name: "Inventory Booking & Flash Sale Platform",
-          tech: ["Java 21", "Spring Boot 3", "Spring Security", "MySQL", "Redis", "Apache Kafka", "MongoDB", "Redisson", "JWT", "Docker", "Maven"],
-          description: "Scalable backend simulating a high-traffic flash sale e-commerce system — user management, product catalog, inventory, time-bound bookings, orders, and payments.",
-          key_features: [
-            "Redisson distributed locks prevent overselling and race conditions on limited-stock products",
-            "Redis caching for high-speed access to hot inventory data",
-            "Apache Kafka drives async, event-driven order and notification workflows",
-            "MySQL for transactional data, MongoDB for audit and payment logs",
-            "Spring Security + JWT + BCrypt + role-based authorization + request validation",
-            "Fully containerized with Docker and Docker Compose"
-          ],
-          concepts: ["High-Concurrency Systems", "Distributed Locking", "Event-Driven Architecture", "Redis Caching", "Transaction Management", "REST APIs", "Database Optimization", "Authentication & Authorization", "Asynchronous Processing", "Audit Logging", "Containerization"],
-          repo: "github.com/Ankit-rajput-08/flashsale"
+          type: "Full-stack E-Commerce Backend",
+          stack: ["Spring Boot", "Redis", "Kafka", "MySQL", "MongoDB", "JWT", "Docker"],
+          features: ["Distributed locking (Redisson)", "Event-driven order flow", "Audit logging"]
         },
         {
           name: "Distributed Job Queue System",
-          tech: ["Java 21", "Spring Boot 4.0.4", "Redis 7", "MySQL 8.0", "Lua", "Docker"],
-          problem_solved: "Production-grade job queue for massive concurrent submissions with strict SLA guarantees — zero job loss with sub-second response times.",
-          key_features: [
-            "Three-tier priority system (PUBLIC / UNPAID / PAID) with adaptive 60s-300s SLA guarantees",
-            "Lua-script-based atomic Redis operations eliminate race conditions",
-            "Automatic crash detection and recovery sustain a 99.9%+ completion rate",
-            "Adaptive scheduling adjusts job acceptance based on real-time system health",
-            "Worker thread pools + Redis sorted sets handle millions of queued jobs in parallel",
-            "Heartbeat monitoring with millisecond precision, containerized with health checks"
-          ],
-          result: "Processes thousands of concurrent jobs with automatic recovery, zero manual intervention, guaranteed SLA compliance.",
-          repo: "github.com/Ankit-rajput-08/traffic-control-service"
+          type: "Backend Infrastructure",
+          stack: ["Java 21", "Spring Boot", "Redis 7", "Lua", "Docker"],
+          features: ["Tiered SLA queue", "Atomic Redis operations", "Auto crash recovery"],
+          achievement: "99.9%+ job completion rate"
         }
       ]
     }
@@ -1050,6 +1203,30 @@
   }
 
   executeBtn.addEventListener('click', runRequest);
+
+  // ============ Contact form → mailto ============
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('fName').value.trim();
+      const email = document.getElementById('fEmail').value.trim();
+      const message = document.getElementById('fMessage').value.trim();
+
+      const subject = 'Portfolio inquiry from ' + name;
+      const body =
+        'Name: ' + name + '\n' +
+        'Email: ' + email + '\n\n' +
+        message;
+
+      const mailtoLink =
+        'mailto:ankitrajput8@yahoo.com' +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
+
+      window.location.href = mailtoLink;
+    });
+  }
 </script>
 
 </body>
