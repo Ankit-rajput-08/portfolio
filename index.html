@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ankit Rajput | Backend Engineer — Distributed Systems</title>
+<meta name="description" content="Portfolio of Ankit Rajput, a Backend Engineer specializing in Java, Spring Boot, Redis, and Kafka for high-concurrency distributed systems.">
+<meta name="author" content="Ankit Rajput">
+<meta name="theme-color" content="#0a0d12">
+<meta property="og:title" content="Ankit Rajput | Backend Engineer">
+<meta property="og:description" content="Backend Engineer specializing in Java, Spring Boot, Redis, and Kafka.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ==========================================================
+     TOKENS
+     ========================================================== */
+  :root{
+    --bg: #0a0d12;
+    --bg-elevated: #0e131a;
+    --surface: #121821;
+    --surface-2: #161d28;
+    --border: #232b38;
+    --border-soft: #1a212c;
+    --text: #e7ecf3;
+    --text-muted: #8a94a6;
+    --text-dim: #5b6478;
+    --accent: #e63946;
+    --accent-soft: rgba(230, 57, 70, 0.12);
+    --accent-soft-2: rgba(230, 57, 70, 0.32);
+    --accent-hover: #f05a66;
+    --amber: #ffb454;
+    --amber-soft: rgba(255, 180, 84, 0.12);
+    --red: #ff6b6b;
+    --json-num: #7ec8ff;
+    --json-bool: #b98cff;
+    --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --maxw: 1080px;
+    --nav-h: 64px;
+  }
+
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *,*::before,*::after{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* subtle background grid texture */
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 70%);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  h1,h2,h3,h4{
+    font-family: var(--mono);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+  ul{ margin: 0; padding: 0; list-style: none; }
+  img{ max-width: 100%; display: block; }
+  button{ font-family: inherit; }
+
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .eyebrow::before{
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .section{
+    position: relative;
+    z-index: 1;
+    padding: 96px 0;
+    border-top: 1px solid var(--border-soft);
+  }
+  .section-head{
+    margin-bottom: 44px;
+  }
+  .section-title{
+    font-size: clamp(24px, 3vw, 32px);
+  }
+  .section-title .dim{ color: var(--text-dim); }
+
+  /* ==========================================================
+     NAV
+     ========================================================== */
+  header.nav{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    z-index: 100;
+    background: rgba(10, 13, 18, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .nav-inner{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo{
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .logo .p{ color: var(--accent); }
+  .nav-links{
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav-links a{
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--text-muted);
+    transition: color 0.15s ease;
+    position: relative;
+  }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-links a.cta{
+    color: var(--bg);
+    background: var(--accent);
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+  }
+  .nav-links a.cta:hover{ background: var(--accent-hover); color: var(--bg); }
+
+  .nav-toggle{
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    width: 40px; height: 40px;
+    color: var(--text);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-toggle svg{ width: 18px; height: 18px; }
+
+  /* ==========================================================
+     HERO
+     ========================================================== */
+  .hero{
+    position: relative;
+    z-index: 1;
+    padding: calc(var(--nav-h) + 112px) 0 140px;
+  }
+  .hero-grid{
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .status-badge{ margin-bottom: 30px; }
+  .hero-name{
+    font-size: clamp(48px, 7.2vw, 92px);
+    margin-bottom: 18px;
+    letter-spacing: -0.02em;
+  }
+  .hero-title{
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 600;
+    margin-bottom: 32px;
+  }
+  .hero-bio{
+    color: var(--text-muted);
+    font-size: 17px;
+    max-width: 50ch;
+    margin-bottom: 40px;
+  }
+  .hero-actions{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 34px;
+  }
+  .btn{
+    font-family: var(--mono);
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 12px 18px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .btn.primary{
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .btn.primary:hover{ background: var(--accent-hover); }
+  .btn.ghost{
+    background: transparent;
+    color: var(--text);
+  }
+  .btn.ghost:hover{ border-color: var(--accent-soft-2); color: var(--accent); }
+  .btn svg{ width: 15px; height: 15px; }
+
+  .status-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--amber);
+    background: var(--amber-soft);
+    border: 1px solid rgba(255,180,84,0.25);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .status-badge .dot{
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity: 1; }
+    50%{ opacity: 0.35; }
+  }
+
+  /* hero console panel */
+  .console{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+  }
+  .console-bar{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .console-bar .dots{ display: flex; gap: 6px; }
+  .console-bar .dots span{
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .console-bar .filename{
+    margin-left: 8px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  /* request row — Postman-style method / URL / execute */
+  .request-row{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-elevated);
+  }
+  .req-select{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 10px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .req-select:hover, .req-select:focus-visible{ border-color: var(--accent-soft-2); }
+  .method-select{
+    color: var(--accent);
+    flex-shrink: 0;
+    width: 78px;
+  }
+  .url-select{
+    flex: 1;
+    min-width: 0;
+    color: var(--text-muted);
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-dim) 50%), linear-gradient(135deg, var(--text-dim) 50%, transparent 50%);
+    background-position: calc(100% - 14px) center, calc(100% - 9px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 28px;
+    text-overflow: ellipsis;
+  }
+  .btn-execute{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .btn-execute:hover{ background: var(--accent-hover); }
+  .btn-execute:active{ transform: scale(0.97); }
+  .btn-execute:disabled{ opacity: 0.6; cursor: progress; }
+
+  .console-body{
+    padding: 20px;
+    font-family: var(--mono);
+    font-size: 13px;
+    min-height: 210px;
+  }
+  .console-placeholder{ color: var(--text-dim); }
+  .console-placeholder::before{ content: "$ "; color: var(--accent); }
+
+  .response-status{
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .response-status .code{
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .response-status .time{ color: var(--text-dim); font-size: 12px; }
+  .response-headers{
+    color: var(--text-dim);
+    font-size: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .response-headers .h-val{ color: var(--text-muted); }
+  .response-json{
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+  .response-json .json-key{ color: var(--amber); }
+  .response-json .json-str{ color: var(--accent); }
+  .response-json .json-num{ color: var(--json-num); }
+  .response-json .json-bool{ color: var(--json-bool); }
+  .response-json .json-punc{ color: var(--text-dim); }
+
+  .typing-dots{ display: inline-flex; gap: 4px; align-items: center; }
+  .typing-dots span{
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: typing-bounce 1s infinite ease-in-out;
+  }
+  .typing-dots span:nth-child(2){ animation-delay: 0.15s; }
+  .typing-dots span:nth-child(3){ animation-delay: 0.3s; }
+  @keyframes typing-bounce{
+    0%, 60%, 100%{ transform: translateY(0); opacity: 0.5; }
+    30%{ transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* ==========================================================
+     PILL / TAGS
+     ========================================================== */
+  .tag{
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+
+  /* ==========================================================
+     PROJECTS
+     ========================================================== */
+  .project-card{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 28px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .project-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.55);
+    border-color: var(--accent-soft-2);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .project-card:hover{ transform: none; }
+  }
+  .project-card:last-child{ margin-bottom: 0; }
+  .project-visual{
+    position: relative;
+    background: var(--bg-elevated);
+    border-right: 1px solid var(--border);
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    overflow: hidden;
+  }
+  .project-visual::before{
+    content: "";
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+    background-size: 18px 18px;
+    opacity: 0.5;
+  }
+  .diagram{
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+  .diagram-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .diagram-node{
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    text-align: center;
+    color: var(--text);
+    flex: 1;
+    min-width: 0;
+  }
+  .diagram-node.accent{ border-color: var(--accent-soft-2); color: var(--accent); }
+  .diagram-node .sub{ display:block; color: var(--text-dim); font-size: 9.5px; margin-top: 3px; }
+  .diagram-arrow{
+    color: var(--text-dim);
+    font-size: 14px;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+  .diagram-caption{
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 10.5px;
+    margin-top: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .project-body{
+    padding: 30px 32px;
+  }
+  .project-name{
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .project-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .project-desc{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .project-desc li{
+    position: relative;
+    padding-left: 18px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .project-desc li::before{
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+  .project-link{
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--accent-soft-2);
+    transition: border-color 0.15s ease, gap 0.15s ease;
+  }
+  .project-link:hover{ border-color: var(--accent); gap: 9px; }
+  .project-link svg{ width: 14px; height: 14px; }
+
+  /* ==========================================================
+     EDUCATION
+     ========================================================== */
+  .edu-card{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 30px;
+    flex-wrap: wrap;
+  }
+  .edu-degree{
+    font-family: var(--mono);
+    font-size: 17px;
+    margin-bottom: 6px;
+  }
+  .edu-school{ color: var(--text-muted); font-size: 14.5px; }
+  .edu-year{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-dim);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  /* ==========================================================
+     FOOTER
+     ========================================================== */
+  footer{
+    padding: 32px 0 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  footer p{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* ==========================================================
+     REVEAL ANIMATION
+     ========================================================== */
+  .reveal{
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.in{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ==========================================================
+     FOCUS
+     ========================================================== */
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* ==========================================================
+     RESPONSIVE
+     ========================================================== */
+  @media (max-width: 860px){
+    .hero-grid{ grid-template-columns: 1fr; gap: 40px; }
+    .project-card{ grid-template-columns: 1fr; }
+    .project-visual{ border-right: none; border-bottom: 1px solid var(--border); min-height: 200px; }
+  }
+
+  @media (max-width: 768px){
+    .nav-links{
+      position: fixed;
+      top: var(--nav-h);
+      left: 0; right: 0;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px 24px 28px;
+      gap: 18px;
+      transform: translateY(-8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .nav-links.open{
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav-toggle{ display: inline-flex; }
+    .nav-links a.cta{ margin-top: 4px; }
+    .edu-card{ flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 560px){
+    .section{ padding: 68px 0; }
+    .hero{ padding: calc(var(--nav-h) + 44px) 0 60px; }
+    .project-body{ padding: 24px 22px; }
+    .wrap{ padding: 0 20px; }
+    .request-row{ flex-wrap: wrap; }
+    .method-select{ width: 88px; }
+    .url-select{ flex-basis: 100%; order: 3; }
+    .btn-execute{ flex: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">$<span class="p">&nbsp;ankit</span>.rajput</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="mailto:ankitrajput8@yahoo.com" class="cta">Email Me</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="status-badge"><span class="dot"></span>Open to Backend Engineer roles</span>
+        <h1 class="hero-name">Ankit Rajput</h1>
+        <p class="hero-title">Backend Engineer — Distributed Systems &amp; Java</p>
+        <p class="hero-bio">
+          I build backend systems that stay correct under load — high-concurrency services in Java and Spring Boot,
+          backed by Redis and Apache Kafka for async processing and fault-tolerant messaging.
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="mailto:ankitrajput8@yahoo.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg>
+            Email Me
+          </a>
+          <a class="btn ghost" href="https://github.com/Ankit-rajput-08" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.66.5 12.03c0 5.1 3.29 9.42 7.86 10.96.57.1.78-.25.78-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.08-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.8 1.19 1.82 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.66.79.55A10.53 10.53 0 0 0 23.5 12.03C23.5 5.66 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+          <a class="btn ghost" href="https://www.linkedin.com/in/ankitrajput08/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.44-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+
+      <div class="console reveal" id="apiConsole">
+        <div class="console-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span class="filename">PortfolioController.java</span>
+        </div>
+
+        <div class="request-row">
+          <select id="methodSelect" class="req-select method-select" aria-label="HTTP method">
+            <option value="GET">GET</option>
+          </select>
+          <select id="endpointSelect" class="req-select url-select" aria-label="API endpoint">
+            <option value="profile">ankitrajput.dev/api/portfolio/profile</option>
+            <option value="skills">ankitrajput.dev/api/portfolio/skills</option>
+            <option value="projects">ankitrajput.dev/api/portfolio/projects</option>
+          </select>
+          <button id="executeBtn" class="btn-execute">Execute</button>
+        </div>
+
+        <div class="console-body" id="consoleOutput">
+          <div class="console-placeholder">$ Select an endpoint and hit execute to learn more about me...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">01 · about.md</div>
+        <h2 class="section-title">Who I <span class="dim">am</span></h2>
+      </div>
+      <p style="max-width: 68ch; color: var(--text-muted); font-size: 16px;" class="reveal">
+        I'm a backend engineer who enjoys the part of the system most people don't see — the queueing, locking,
+        and recovery logic that keeps a service correct when ten things happen at once. Most of my recent work has
+        been building distributed job orchestration and high-concurrency inventory systems in Java and Spring Boot,
+        using Redis for coordination and Apache Kafka to decouple slow work from fast responses. I'm currently
+        looking for a Backend Engineer role centered on scalable services, asynchronous processing, and
+        distributed architecture.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section class="section" id="projects">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">02 · projects.md</div>
+        <h2 class="section-title">Things I've <span class="dim">built</span></h2>
+      </div>
+
+      <!-- Project 1: Inventory Booking & Flash Sale Platform -->
+      <div class="project-card reveal">
+        <div class="project-visual">
+          <!-- To add a real screenshot or architecture image, replace this .diagram block with:
+               <img src="flashsale.png" alt="Inventory Booking & Flash Sale Platform architecture"> -->
+          <div class="diagram">
+            <div class="diagram-row">
+              <div class="diagram-node">Flash Sale API<span class="sub">bookings + orders</span></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-node accent">Redisson Lock<span class="sub">no overselling</span></div>
+            </div>
+            <div class="diagram-row" style="margin-top:14px;">
+              <div class="diagram-node">MySQL<span class="sub">transactional data</span></div>
+              <div class="diagram-arrow">⇄</div>
+              <div class="diagram-node">Kafka → Mongo<span class="sub">async + audit log</span></div>
+            </div>
+            <div class="diagram-caption">JWT · BCrypt · role-based auth · Dockerized</div>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3 class="project-name">Inventory Booking &amp; Flash Sale Platform</h3>
+          <div class="project-tags">
+            <span class="tag">Java 21</span>
+            <span class="tag">Spring Boot 3</span>
+            <span class="tag">Spring Security</span>
+            <span class="tag">Redis</span>
+            <span class="tag">Redisson</span>
+            <span class="tag">Kafka</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">MongoDB</span>
+            <span class="tag">JWT</span>
+            <span class="tag">Docker</span>
+          </div>
+          <ul class="project-desc">
+            <li>A scalable backend platform simulating the architecture and challenges of a high-traffic flash sale e-commerce system — user management, product catalog, inventory, time-bound bookings, orders, and payments end to end.</li>
+            <li>Redisson distributed locks protect inventory operations from race conditions, preventing overselling when multiple users buy the same limited-stock product at once; Redis handles caching and high-speed access.</li>
+            <li>Apache Kafka drives asynchronous, event-driven order and notification workflows, decoupling slow work from fast API responses.</li>
+            <li>MySQL handles transactional business data while MongoDB stores audit and payment logs separately from the core transactional workload.</li>
+            <li>Secured with Spring Security, JWT authentication, BCrypt password hashing, role-based authorization, and request validation; the full stack is containerized with Docker and Docker Compose.</li>
+          </ul>
+          <a class="project-link" href="https://github.com/Ankit-rajput-08/flashsale" target="_blank" rel="noopener noreferrer">
+            View Source
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 2: Distributed Job Queue System -->
+      <div class="project-card reveal">
+        <div class="project-visual">
+          <!-- To add a real screenshot or architecture image, replace this .diagram block with:
+               <img src="traffic-control-service.png" alt="Distributed Job Queue System architecture"> -->
+          <div class="diagram">
+            <div class="diagram-row">
+              <div class="diagram-node">PUBLIC / UNPAID / PAID<span class="sub">tiered priority</span></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-node accent">Redis + Lua<span class="sub">atomic state</span></div>
+            </div>
+            <div class="diagram-row" style="margin-top:14px;">
+              <div class="diagram-node">Worker Pool<span class="sub">parallel processing</span></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-node">Recovery Scheduler<span class="sub">crash detection</span></div>
+            </div>
+            <div class="diagram-caption">60s–300s adaptive SLAs · 99.9%+ completion rate</div>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3 class="project-name">Distributed Job Queue System</h3>
+          <div class="project-tags">
+            <span class="tag">Java 21</span>
+            <span class="tag">Spring Boot 4.0.4</span>
+            <span class="tag">Redis 7</span>
+            <span class="tag">MySQL 8.0</span>
+            <span class="tag">Lua</span>
+            <span class="tag">Docker</span>
+          </div>
+          <ul class="project-desc">
+            <li>A production-grade job queue built for massive concurrent submissions with strict SLA guarantees — traditional queues fail under this kind of load; this one guarantees zero job loss with sub-second response times.</li>
+            <li>Three-tier priority system (PUBLIC / UNPAID / PAID) with adaptive processing guarantees ranging from 60s to 300s SLAs per tier.</li>
+            <li>Lua-script-based atomic operations on Redis eliminate race conditions; automatic crash detection and recovery sustain a 99.9%+ job completion rate.</li>
+            <li>Adaptive scheduling adjusts job acceptance in real time based on system health metrics; worker thread pools process jobs in parallel while Redis sorted sets handle millions of queued jobs without degrading.</li>
+            <li>Heartbeat monitoring tracks job processing with millisecond precision, and containerized deployment ships with health checks and service orchestration.</li>
+          </ul>
+          <p style="color: var(--text-muted); font-size: 13.5px; margin: -6px 0 18px;">
+            <strong style="color: var(--text);">Result:</strong> processes thousands of concurrent jobs with automatic recovery, zero manual intervention, and guaranteed SLA compliance.
+          </p>
+          <a class="project-link" href="https://github.com/Ankit-rajput-08/traffic-control-service" target="_blank" rel="noopener noreferrer">
+            View Source
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EDUCATION ============ -->
+  <section class="section" id="education">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">03 · education.md</div>
+        <h2 class="section-title">Academic <span class="dim">background</span></h2>
+      </div>
+      <div class="edu-card reveal">
+        <div>
+          <div class="edu-degree">B.Tech in Computer Science &amp; Engineering</div>
+          <div class="edu-school">Punjab Technical University</div>
+        </div>
+        <span class="edu-year">2022 — 2026</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Built by Ankit Rajput · Java · Spring Boot · Redis · Kafka</p>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Reveal-on-scroll
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) {
+    revealEls.forEach(el => el.classList.add('in'));
+  } else if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in'));
+  }
+
+  // ============ Postman-style API console ============
+  const API_RESPONSES = {
+    profile: {
+      status: 200, statusText: 'OK',
+      body: {
+        name: "Ankit Rajput",
+        title: "Backend Engineer — Distributed Systems & Java",
+        status: "Open to work",
+        location: "India",
+        summary: "Backend engineer with experience building scalable distributed systems using Java, Spring Boot, Redis, and Kafka.",
+        seeking: "Backend Engineer role focused on scalable services, asynchronous processing, system reliability, and distributed architecture.",
+        education: {
+          degree: "B.Tech in Computer Science & Engineering",
+          university: "Punjab Technical University",
+          years: "2022 - 2026"
+        },
+        contact: {
+          email: "ankitrajput8@yahoo.com",
+          linkedin: "linkedin.com/in/ankitrajput08",
+          github: "github.com/Ankit-rajput-08"
+        }
+      }
+    },
+    skills: {
+      status: 200, statusText: 'OK',
+      body: {
+        languages: ["Java"],
+        frameworks_and_libraries: ["Spring Boot", "Spring Data JPA", "Spring Security", "REST APIs", "JWT", "Hibernate", "Maven"],
+        databases_and_caching: ["MySQL", "MongoDB", "Redis (Lua Scripting, ZSET, Atomic Operations, Redisson)"],
+        messaging: ["Apache Kafka"],
+        tools: ["Git", "Docker", "Postman", "IntelliJ IDEA", "VS Code"],
+        core_concepts: ["Object-Oriented Programming", "Database Management Systems", "Microservices", "Event-Driven Architecture", "Async Messaging", "API Design", "Concurrency Control"]
+      }
+    },
+    projects: {
+      status: 200, statusText: 'OK',
+      body: [
+        {
+          name: "Inventory Booking & Flash Sale Platform",
+          tech: ["Java 21", "Spring Boot 3", "Spring Security", "MySQL", "Redis", "Apache Kafka", "MongoDB", "Redisson", "JWT", "Docker", "Maven"],
+          description: "Scalable backend simulating a high-traffic flash sale e-commerce system — user management, product catalog, inventory, time-bound bookings, orders, and payments.",
+          key_features: [
+            "Redisson distributed locks prevent overselling and race conditions on limited-stock products",
+            "Redis caching for high-speed access to hot inventory data",
+            "Apache Kafka drives async, event-driven order and notification workflows",
+            "MySQL for transactional data, MongoDB for audit and payment logs",
+            "Spring Security + JWT + BCrypt + role-based authorization + request validation",
+            "Fully containerized with Docker and Docker Compose"
+          ],
+          concepts: ["High-Concurrency Systems", "Distributed Locking", "Event-Driven Architecture", "Redis Caching", "Transaction Management", "REST APIs", "Database Optimization", "Authentication & Authorization", "Asynchronous Processing", "Audit Logging", "Containerization"],
+          repo: "github.com/Ankit-rajput-08/flashsale"
+        },
+        {
+          name: "Distributed Job Queue System",
+          tech: ["Java 21", "Spring Boot 4.0.4", "Redis 7", "MySQL 8.0", "Lua", "Docker"],
+          problem_solved: "Production-grade job queue for massive concurrent submissions with strict SLA guarantees — zero job loss with sub-second response times.",
+          key_features: [
+            "Three-tier priority system (PUBLIC / UNPAID / PAID) with adaptive 60s-300s SLA guarantees",
+            "Lua-script-based atomic Redis operations eliminate race conditions",
+            "Automatic crash detection and recovery sustain a 99.9%+ completion rate",
+            "Adaptive scheduling adjusts job acceptance based on real-time system health",
+            "Worker thread pools + Redis sorted sets handle millions of queued jobs in parallel",
+            "Heartbeat monitoring with millisecond precision, containerized with health checks"
+          ],
+          result: "Processes thousands of concurrent jobs with automatic recovery, zero manual intervention, guaranteed SLA compliance.",
+          repo: "github.com/Ankit-rajput-08/traffic-control-service"
+        }
+      ]
+    }
+  };
+
+  function syntaxHighlightJSON(obj) {
+    let json = JSON.stringify(obj, null, 2);
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    json = json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false)\b|\bnull\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
+      let cls = 'json-num';
+      if (/^"/.test(match)) cls = /:$/.test(match) ? 'json-key' : 'json-str';
+      else if (/true|false/.test(match)) cls = 'json-bool';
+      else if (/null/.test(match)) cls = 'json-bool';
+      return '<span class="' + cls + '">' + match + '</span>';
+    });
+    return json.replace(/([{}\[\],])/g, '<span class="json-punc">$1</span>');
+  }
+
+  const methodSelect = document.getElementById('methodSelect');
+  const endpointSelect = document.getElementById('endpointSelect');
+  const executeBtn = document.getElementById('executeBtn');
+  const consoleOutput = document.getElementById('consoleOutput');
+
+  function runRequest() {
+    const key = endpointSelect.value;
+    const method = methodSelect.value;
+    const data = API_RESPONSES[key];
+    executeBtn.disabled = true;
+    executeBtn.textContent = 'Sending…';
+
+    consoleOutput.innerHTML =
+      '<div class="console-placeholder">' + method + ' ' + endpointSelect.options[endpointSelect.selectedIndex].text +
+      ' <span class="typing-dots"><span></span><span></span><span></span></span></div>';
+
+    const delay = reduceMotion ? 0 : 420 + Math.random() * 380;
+    window.setTimeout(() => {
+      const ms = Math.round(18 + Math.random() * 60);
+      consoleOutput.innerHTML =
+        '<div class="response-status">' +
+          '<span class="code">HTTP/1.1 ' + data.status + ' ' + data.statusText + '</span>' +
+          '<span class="time">' + ms + 'ms</span>' +
+        '</div>' +
+        '<div class="response-headers">Content-Type: <span class="h-val">application/json</span></div>' +
+        '<pre class="response-json">' + syntaxHighlightJSON(data.body) + '</pre>';
+      executeBtn.disabled = false;
+      executeBtn.textContent = 'Execute';
+    }, delay);
+  }
+
+  executeBtn.addEventListener('click', runRequest);
+</script>
+
+</body>
+</html>
