@@ -1205,26 +1205,80 @@
   executeBtn.addEventListener('click', runRequest);
 
   // ============ Contact form → mailto ============
+  // const contactForm = document.getElementById('contactForm');
+  // if (contactForm) {
+  //   contactForm.addEventListener('submit', (e) => {
+  //     e.preventDefault();
+  //     const name = document.getElementById('fName').value.trim();
+  //     const email = document.getElementById('fEmail').value.trim();
+  //     const message = document.getElementById('fMessage').value.trim();
+
+  //     const subject = 'Portfolio inquiry from ' + name;
+  //     const body =
+  //       'Name: ' + name + '\n' +
+  //       'Email: ' + email + '\n\n' +
+  //       message;
+
+  //     const mailtoLink =
+  //       'mailto:ankitrajput8@yahoo.com' +
+  //       '?subject=' + encodeURIComponent(subject) +
+  //       '&body=' + encodeURIComponent(body);
+
+  //     window.location.href = mailtoLink;
+  //   });
+  // }
+
+  // ============ Contact form → Formspree (falls back to mailto) ============
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/REPLACE_ME";
+
   const contactForm = document.getElementById('contactForm');
+  const sendBtn = contactForm ? contactForm.querySelector('.btn-send') : null;
+  const sendNote = document.getElementById('sendNote');
+
+  function buildMailto(name, email, message) {
+    const subject = 'Portfolio inquiry from ' + name;
+    const body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
+    return 'mailto:ankitrajput8@yahoo.com' +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  }
+
   if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('fName').value.trim();
       const email = document.getElementById('fEmail').value.trim();
       const message = document.getElementById('fMessage').value.trim();
 
-      const subject = 'Portfolio inquiry from ' + name;
-      const body =
-        'Name: ' + name + '\n' +
-        'Email: ' + email + '\n\n' +
-        message;
+      if (FORMSPREE_ENDPOINT.includes('REPLACE_ME')) {
+        window.location.href = buildMailto(name, email, message);
+        return;
+      }
 
-      const mailtoLink =
-        'mailto:ankitrajput8@yahoo.com' +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body);
+      sendBtn.disabled = true;
+      sendBtn.textContent = '[ SENDING… ]';
+      sendNote.textContent = '';
 
-      window.location.href = mailtoLink;
+      try {
+        const res = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(contactForm)
+        });
+
+        if (res.ok) {
+          sendBtn.textContent = '[ MESSAGE SENT ]';
+          sendNote.textContent = 'Thanks — I\u2019ll get back to you soon.';
+          contactForm.reset();
+          window.setTimeout(() => { sendBtn.textContent = '[ SEND MESSAGE ]'; sendBtn.disabled = false; }, 3000);
+        } else {
+          throw new Error('Formspree request failed');
+        }
+      } catch (err) {
+        sendBtn.textContent = '[ SEND MESSAGE ]';
+        sendBtn.disabled = false;
+        sendNote.innerHTML = 'Something went wrong — <a href="' + buildMailto(name, email, message) + '" style="color:var(--accent);">email me directly</a> instead.';
+      }
     });
   }
 </script>
